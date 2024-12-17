@@ -9,18 +9,19 @@ const TaskList: React.FC = () => {
   const initTasks = useSelector((state: RootState) => state.tasks.tasks);
   const [tasks, setTasks] = useState<Task[]>(initTasks);
   const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
+  const token = useSelector((state: RootState) => state.auth.token)!;
 
   const fetchTasks = async () => {
-    const tasksData = await TaskService.getTasks();
+    const tasksData = await TaskService.getTasks(token);
     setTasks(tasksData);
   };
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  });
 
   const handleDelete = async (id: string) => {
-    await TaskService.deleteTask(id);
+    await TaskService.deleteTask(id, token);
     setTasks(tasks.filter((task) => task._id !== id));
   };
 
@@ -29,14 +30,18 @@ const TaskList: React.FC = () => {
   };
 
   const handleUpdate = async (task: Task) => {
-    const updatedTask = await TaskService.updateTask(currentTask!._id, task);
+    const updatedTask = await TaskService.updateTask(
+      currentTask!._id,
+      task,
+      token
+    );
     setTasks(tasks.map((t) => (t._id === currentTask!._id ? updatedTask : t)));
     setCurrentTask(undefined);
     window.location.reload();
   };
 
   const handleCreate = async (task: Omit<Task, "_id">) => {
-    const newTask = await TaskService.createTask(task);
+    const newTask = await TaskService.createTask(task, token);
     setTasks([...tasks, newTask]);
     window.location.reload();
   };

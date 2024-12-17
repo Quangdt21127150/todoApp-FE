@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import TaskPage from "./pages/TaskPage";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
 
 const App = () => {
-  const isAuthenticated = localStorage.getItem("token");
+  const isAuthenticated = useSelector((state: RootState) => state.auth.token);
 
   return (
     <Router>

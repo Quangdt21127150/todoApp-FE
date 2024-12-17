@@ -1,12 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearToken } from "../slices/authSlice";
 
 const LogoutButton: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      localStorage.removeItem("token");
+      dispatch(clearToken());
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);

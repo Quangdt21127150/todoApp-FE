@@ -18,11 +18,6 @@ export interface LoginFormInputs {
 export const AuthService = {
   login: async (data: LoginFormInputs) => {
     const response = await axios.post(`${API_URL}/login`, data);
-
-    if (response.data.data.access_token) {
-      localStorage.setItem("token", response.data.data.access_token);
-    }
-
     return response.data;
   },
 

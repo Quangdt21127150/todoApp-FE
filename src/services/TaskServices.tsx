@@ -13,8 +13,7 @@ export interface Task {
 }
 
 export const TaskService = {
-  getTasks: async () => {
-    const token = localStorage.getItem("token");
+  getTasks: async (token: string) => {
     const { data } = await axios.get(API_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,8 +22,10 @@ export const TaskService = {
     return data;
   },
 
-  createTask: async (task: Omit<Task, "_id" | "createdAt" | "updatedAt">) => {
-    const token = localStorage.getItem("token");
+  createTask: async (
+    task: Omit<Task, "_id" | "createdAt" | "updatedAt">,
+    token: string
+  ) => {
     const { data } = await axios.post(API_URL, task, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,8 +34,7 @@ export const TaskService = {
     return data;
   },
 
-  updateTask: async (id: string, task: Partial<Task>) => {
-    const token = localStorage.getItem("token");
+  updateTask: async (id: string, task: Partial<Task>, token: string) => {
     const { data } = await axios.put(`${API_URL}/${id}`, task, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,8 +43,7 @@ export const TaskService = {
     return data;
   },
 
-  deleteTask: async (id: string) => {
-    const token = localStorage.getItem("token");
+  deleteTask: async (id: string, token: string) => {
     await axios.delete(`${API_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,

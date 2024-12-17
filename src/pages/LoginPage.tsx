@@ -1,9 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginFormInputs, AuthService } from "../services/AuthServices";
+import { useDispatch } from "react-redux";
+import { setToken } from "../slices/authSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -13,8 +16,9 @@ const LoginPage = () => {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await AuthService.login(data);
+      const response = await AuthService.login(data);
       alert("Login successful");
+      dispatch(setToken(response.data.access_token));
       navigate("/tasks");
     } catch (error) {
       console.error(error);
